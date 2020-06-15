@@ -1,0 +1,64 @@
+cmake_minimum_required(VERSION 2.8.9)
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
+
+
+function(func_run_performance_test)
+    message(WARNING "+++++++++++++++++++++++")
+    message(WARNING "Perf profiler is ON")
+    message(WARNING "Perf profiler is ON")
+    message(WARNING "Perf profiler is ON")
+    message(WARNING "+++++++++++++++++++++++")
+    set(CMAKE_CXX_FLAGS     "${CMAKE_CXX_FLAGS} -g -rdynamic")
+endfunction()
+
+
+function(func_add_common_target_link_libraries mytarget)
+    target_link_libraries(${mytarget} rt)
+    target_link_libraries(${mytarget} ${CMAKE_DL_LIBS})
+    target_link_libraries(${mytarget} "-lpthread")
+    target_link_libraries(${mytarget} ${CMAKE_THREAD_LIBS_INIT})
+    target_link_libraries(${mytarget} ${Boost_LIBRARIES})
+    target_link_libraries(${mytarget} stdc++fs)
+endfunction()
+
+
+# Detect operating system
+if(${CMAKE_SYSTEM_NAME} STREQUAL "Linux")
+    add_definitions(-DSYSTEM_LINUX)
+endif()
+if(${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
+    add_definitions(-DSYSTEM_FREEBSD)
+endif()
+if(${CMAKE_SYSTEM_NAME} MATCHES "Windows")
+    add_definitions(-DSYSTEM_WINDOWS)
+endif()
+
+# Detect operating system
+message(STATUS "Detected operating system: ${CMAKE_SYSTEM_NAME}")
+
+
+set(CMAKE_C_COMPILER        "gcc-8")
+set(CMAKE_CXX_COMPILER      "g++-8")
+set(CMAKE_CXX_FLAGS         "${CMAKE_CXX_FLAGS} -Wall -Wconversion -Wfatal-errors -Wextra -std=c++17 -pthread")
+set(CMAKE_CXX_FLAGS_DEBUG   "-Og -g3 -fsanitize=address -fno-omit-frame-pointer")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3 -DNDEBUG -DARMA_NO_DEBUG")
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_STANDARD 17)
+
+
+# Libraries
+set(Boost_USE_STATIC_LIBS OFF) 
+set(Boost_USE_MULTITHREADED ON)  
+set(Boost_USE_STATIC_RUNTIME OFF) 
+find_package(Threads REQUIRED)
+find_package(Boost 1.66.0 COMPONENTS filesystem regex system thread date_time wave) 
+find_package(Threads)
+
+
+if(NOT Boost_FOUND)
+    message( FATAL_ERROR "Boost 1.66.0 not found." )
+endif()
+include_directories(SYSTEM ${Boost_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIRS}) 

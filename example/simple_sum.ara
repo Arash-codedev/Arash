@@ -1,0 +1,19 @@
+import std
+
+
+func sum
+    x : Int
+    y : Int
+    -> Int
+body
+    var out = x + y
+    return out
+
+
+func main
+body
+    var x = 5 : Int
+    var y = 6 : Int
+    var z = sum(z,y) : Int
+    print_int(z)
+    return 0

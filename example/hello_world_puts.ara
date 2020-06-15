@@ -1,0 +1,9 @@
+#sys_decl
+func puts
+    const str : Char *
+    -> Int
+
+
+func main
+body
+    puts('Hello world')

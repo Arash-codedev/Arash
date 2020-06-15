@@ -1,0 +1,94 @@
+%YAML 1.2
+---
+# See http://www.sublimetext.com/docs/3/syntax.html
+file_extensions:
+  - ara
+scope: source.arash
+contexts:
+  main:
+
+    - match: ','
+      scope: punctuation.separator.arash
+
+    - match: '='
+      scope: keyword.operator.assignment.arash
+      pop: true
+
+    - match: ^/\* =(\s*.*?)\s*= \*/$\n?
+      scope: comment.block.arash
+
+    # quotes
+    - match: '"'
+      scope: punctuation.definition.string.begin.arash
+      push: double_quoted_string
+
+    - match: "'"
+      scope: punctuation.definition.string.begin.arash
+      push: single_quoted_string
+
+    # attributes
+    - match: '#.*'
+      scope: entity.other.attribute-name
+      push: block_attribute
+
+    # comments
+    - match: '//'
+      scope: punctuation.definition.comment.arash
+      push: line_comment
+
+    - match: \(\*
+      scope: punctuation.definition.comment.arash
+      push: inline_comment
+
+    # keywords
+    - match: '\b(if|else|for|while|body|func|class|enum|var|const|ref|cref|out|copy|private|import|type|return|in|from|new|delete)\b'
+      scope: keyword.control.arash
+
+    # types
+    - match: '\b(UInt|UInt8|UInt16|UInt32|Int|Int8|Int16|Int32|Float|Float32|Float64|String|Bool|Char)\b'
+      scope: support.type.arash
+
+    #language constants
+    - match: \b(true|false|null)\b
+      scope: constant.language.c
+
+    # Numbers
+    - match: '\b(-)?[0-9.]+\b'
+      scope: constant.numeric.arash
+
+    - match: \b(?i)(0x)\h*(L)
+      scope: constant.numeric.integer.hexadecimal.arash
+
+    - match: \b(?i)(0x)(_?\h)+
+      scope: constant.numeric.integer.hexadecimal.arash
+
+  double_quoted_string:
+    - meta_scope: string.quoted.double.arash
+    - match: '\\.'
+      scope: constant.character.escape.arash
+    - match: '"'
+      scope: punctuation.definition.string.end.arash
+      pop: true
+
+  single_quoted_string:
+    - meta_scope: string.quoted.single.arash
+    - match: '\\.'
+      scope: constant.character.escape.arash
+    - match: "'"
+      scope: punctuation.definition.string.end.arash
+      pop: true
+
+  block_attribute:
+    - meta_scope: attribute.arash
+    - match: $
+      pop: true
+
+  line_comment:
+    - meta_scope: comment.line.arash
+    - match: $
+      pop: true
+
+  inline_comment:
+    - meta_scope: comment.line.arash
+    - match: \*\)
+      pop: true

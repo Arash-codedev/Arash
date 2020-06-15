@@ -1,0 +1,10 @@
+#sys_decl
+func printf
+    const format : Char *
+    ...
+    -> Int
+
+
+func main
+body
+    puts('Hello world')

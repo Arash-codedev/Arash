@@ -1,0 +1,173 @@
+body {
+   height: 100%;
+   padding: 0;
+   margin: 0;
+}
+
+.page-content {
+    display: -webkit-flex;
+    display: flex;
+}
+
+.nav-pane {
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+  background: #263050;
+  padding: 20px;
+}
+
+nav ul li a {
+  color: #f1f1f1;
+}
+
+nav{
+  color: #f1f1f1;
+}
+
+.content-pane {
+  -webkit-flex: 4;
+  -ms-flex: 4;
+  flex: 4;
+  background-color: #f9fbfd;
+  padding: 10px;
+}
+
+nav ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.source-code {
+  background-color: #fffdbf;
+  padding: 5px 20px;
+}
+
+.ast-content {
+  background: #eeffe9;
+  padding: 5px 5px 5px 15px;
+}
+
+span.token_unknown {
+  background: #ffff00;
+  color: #ff0000;
+}
+
+span.token_invalid {
+  background: #ff0000;
+  color: #ffffff;
+}
+
+span.token_keyword {
+  color: #ff4747;
+}
+
+span.token_symbol {
+  color: #4d47ff;
+}
+
+span.token_literal {
+  color: #ff9547;
+}
+
+span.token_builtin {
+  color: #1a7b93;
+}
+
+span.token_id {
+  color: #000000;
+}
+
+span.token_space {
+  color: #000000;
+}
+
+span.token_comment {
+  color: #2a9f6e;
+}
+
+.collapsing-header {
+  /*background: #cbc2d9;*/
+  background: #ded2f0;
+  padding: 5px 20px;
+}
+
+.ast-contained {
+  padding: 5px 5px 5px 15px;
+}
+
+.ast-function-group {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function {
+  /*padding: 5px 5px 5px 15px;*/
+  background: #d3f2e4;
+}
+
+.ast-function-details {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-attribute-group {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-attribute {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.empty{
+  /*padding: 5px 5px 5px 15px;*/
+  color: #cccccc;
+}
+
+.ast-function-input-param-group {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-input-param {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-output-type-group {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-output-type{
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-statement-group {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-function-statement {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-statement {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-expresseion {
+  /*padding: 5px 5px 5px 15px;*/
+  background: #caf0ca;
+  /*background: #ffcf64;*/
+}
+
+.ast-expresseion-call-func-name {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-expresseion-call-func-param {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-expresseion-literal {
+  /*padding: 5px 5px 5px 15px;*/
+}
+
+.ast-expresseion-id {
+  /*padding: 5px 5px 5px 15px;*/
+}

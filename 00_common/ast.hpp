@@ -212,6 +212,7 @@ public:
     bool is_entry = false;
     bool is_decl_only = false;
     bool is_sys_decl = false; // calculated from attributes
+    bool is_variadic = false;
     vector<FuncParamDeclAST> input_params;
     vector<TypeDeclAST> output_types;
     CompoundStmtAST compound_stmt;
@@ -232,6 +233,7 @@ public:
             & BOOST_SERIALIZATION_NVP(is_entry)
             & BOOST_SERIALIZATION_NVP(is_decl_only)
             & BOOST_SERIALIZATION_NVP(is_sys_decl)
+            & BOOST_SERIALIZATION_NVP(is_variadic)
             & BOOST_SERIALIZATION_NVP(input_params)
             & BOOST_SERIALIZATION_NVP(output_types)
             & BOOST_SERIALIZATION_NVP(compound_stmt)

@@ -4,3 +4,4 @@
 
 
 void optimizer_process_module(Context & context, int module_index);
+void optimizer_process(Context &context);

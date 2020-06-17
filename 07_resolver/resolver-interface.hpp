@@ -4,3 +4,4 @@
 
 
 void resolver_process_module(Context & context, int module_index);
+void resolver_process(Context &context);

@@ -238,6 +238,11 @@ static void abstractor_process_type(
 }
 
 
+// examples:
+//      const x : Int
+//      cref  y : String
+//      copy  z : Char *
+//      ...
 static void abstractor_process_function_params_add_input(
     Context & context,
     Module & module,
@@ -250,21 +255,38 @@ static void abstractor_process_function_params_add_input(
     const vector<int> & token_indices = param_block.line.token_indices;
     assert(token_indices.size() > 0);
     const Token & first_token = module.token_list[token_indices[0]];
-    func_param.qualifier = token_to_func_param_type(first_token);
-    assert(token_indices.size() > 1);
-    const Token & second_token = module.token_list[token_indices[1]];
-    // todo: second token should be id or -> error
-    assert(second_token.category == TokenCategory::id);
-    func_param.var_name = second_token.text;
-    func_param.is_const = is_const_func_param(func_param.qualifier);
-    assert(token_indices.size() >= 4);
-    const Token & third_token = module.token_list[token_indices[2]];
-    assert(third_token.type == TokenType::sym_colon);
-    // todo: second token should be : or -> error
-    vector<int> param_type_token_indices = std::vector(token_indices.begin() + 3, token_indices.end());
-    assert(func_param.param_type.initialized == false);
-    abstractor_process_type(context, module, func_param.param_type, param_type_token_indices);
-    func_ast.input_params.push_back(func_param);
+
+    // if variadic function: ...
+    if(token_indices.size() == 1 && first_token.type == TokenType::sym_3dots)
+    {
+        if(func_ast.is_variadic)
+            throw runtime_error("The function is already flagged as variadic");
+        if(func_ast.output_types.size() > 0)
+            throw runtime_error("The function variadic symbol cannot be placed after the output types");
+
+        func_ast.is_variadic = true;
+    }
+    else // if fixed number of arguments
+    {
+        if(func_ast.is_variadic)
+            throw runtime_error("The function should not take any argument after the variadic symbol. Place the input argument before.");
+
+        func_param.qualifier = token_to_func_param_type(first_token);
+        assert(token_indices.size() > 1);
+        const Token & second_token = module.token_list[token_indices[1]];
+        // todo: second token should be id or -> error
+        assert(second_token.category == TokenCategory::id);
+        func_param.var_name = second_token.text;
+        func_param.is_const = is_const_func_param(func_param.qualifier);
+        assert(token_indices.size() >= 4);
+        const Token & third_token = module.token_list[token_indices[2]];
+        assert(third_token.type == TokenType::sym_colon);
+        // todo: second token should be : or -> error
+        vector<int> param_type_token_indices = std::vector(token_indices.begin() + 3, token_indices.end());
+        assert(func_param.param_type.initialized == false);
+        abstractor_process_type(context, module, func_param.param_type, param_type_token_indices);
+        func_ast.input_params.push_back(func_param);
+    }
 }
 
 
@@ -328,6 +350,7 @@ static void abstractor_process_function_params(
             case TokenType::kw_const:
             case TokenType::kw_cref:
             case TokenType::kw_ref:
+            case TokenType::sym_3dots:
                 abstractor_process_function_params_add_input(context, module, param_block.children[block_index], func_ast);
                 break;
             case TokenType::sym_arrow:

@@ -227,7 +227,7 @@ static void codegen_process_only_function_decl(
 }
 
 
-static llvm::Value * codegen_process_statement_expression_string(
+static llvm::Value * codegen_process_statement_expression_literal_string(
     const ExpressionAST & expression,
     Context & frontend_context,
     Module & frontend_module,
@@ -240,6 +240,24 @@ static llvm::Value * codegen_process_statement_expression_string(
     assert(expression.literal_token_index >= 0);
     const Token & token = get_token(frontend_module, expression.literal_token_index);
     return builder.CreateGlobalStringPtr(token.encoded_text);
+}
+
+
+static llvm::Value * codegen_process_statement_expression_literal_number(
+    const ExpressionAST & expression,
+    Context & frontend_context,
+    Module & frontend_module,
+    llvm::LLVMContext & llvm_context,
+    llvm::Module *llvm_module,
+    llvm::IRBuilder<> & builder)
+{
+    // todo: support all ranges of integer numbers
+    assert(expression.type == ExpressionType::Number);
+    assert(expression.func_name == "");
+    assert(expression.literal_token_index >= 0);
+    const Token & token = get_token(frontend_module, expression.literal_token_index);
+    int int_value = language::get_number_value(token);
+    return llvm::ConstantInt::get(llvm_context, llvm::APInt(64, int_value));
 }
 
 
@@ -286,10 +304,9 @@ static llvm::Value * codegen_process_statement_expression(
             throw runtime_error("Not implemented. A47532983443");
             break; // to suppress a warning 
         case ExpressionType::Number:
-            throw runtime_error("Not implemented. A47532398598");
-            break; // to suppress a warning 
+            return codegen_process_statement_expression_literal_number(expression, frontend_context, frontend_module, llvm_context, llvm_module, builder);
         case ExpressionType::String:
-            return codegen_process_statement_expression_string(expression, frontend_context, frontend_module, llvm_context, llvm_module, builder);
+            return codegen_process_statement_expression_literal_string(expression, frontend_context, frontend_module, llvm_context, llvm_module, builder);
         case ExpressionType::Assignment:
             throw runtime_error("Not implemented. A47533495234");
             break; // to suppress a warning 
@@ -432,7 +449,7 @@ static void codegen_process_module(
     llvm::TargetMachine * theTargetMachine)
 {
     Module & frontend_module = frontend_context.modules[module_index];
-    if(frontend_module.stage == Stage::Optimizer)
+    if(frontend_module.stage == Stage::Reformer)
         frontend_module.stage = Stage::Codegen;
     else
         throw runtime_error("Wrong stage. A43298750387");

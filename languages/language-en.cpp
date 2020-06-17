@@ -387,7 +387,6 @@ static void get_next_hexnumber_token(
     while(next_column < int(text_line.length()))
     {
         char current_char = text_line[next_column];
-        next_column++;
         bool range_09 = is_num09(current_char);
         bool range_af_small = (current_char >= 'a' && current_char <= 'f');
         bool range_AF_capital = (current_char >= 'A' && current_char <= 'F');
@@ -395,6 +394,7 @@ static void get_next_hexnumber_token(
             hexnumber += current_char;
         else
             break;
+        next_column++;
     }
 
     if(hexnumber.length() < 3)
@@ -436,7 +436,6 @@ static void get_next_decimalnumber_token(
     while(next_column < int(text_line.length()))
     {
         char current_char = text_line[next_column];
-        next_column++;
         bool range_09 = (current_char >= '0' && current_char <= '9');
 
         if(current_char == '.')
@@ -446,6 +445,7 @@ static void get_next_decimalnumber_token(
             number += current_char;
         else
             break;
+        next_column++;
     }
 
     assert(number.length() > 0);
@@ -843,6 +843,11 @@ string get_sys_decl()
 string get_pointer_sign()
 {
     return "*";
+}
+
+int get_number_value(const Token & token)
+{
+    return std::stoi(token.text);
 }
 
 NS_LANGUAGE_END

@@ -26,5 +26,6 @@ string object_file_extention();
 string ir_file_extention();
 string get_sys_decl();
 string get_pointer_sign();
+int get_number_value(const Token & token);
 
 NS_LANGUAGE_END

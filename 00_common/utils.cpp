@@ -10,10 +10,19 @@ bool is_effective(const Token & token)
         return true;
 }
 
-bool has_any_error(Module & module)
+bool has_any_error(const Module & module)
 {
     return module.fatal_error_count || module.ordinary_error_count;
 }
+
+bool has_any_error(const Context & context)
+{
+    for(const Module & module : context.modules)
+        if(has_any_error(module))
+            return true;
+    return false;
+}
+
 
 void add_ordinary_error(Context & context, Module & module, const Token & token_location, const vector<Token> & token_aux_locations, const string & error_message)
 {

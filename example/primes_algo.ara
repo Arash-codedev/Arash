@@ -1,9 +1,0 @@
-import './primes': is_prime
-
-func next_prime
-    after : Int
-    -> Int
-body
-    while !is_prime(after)
-        after++
-    return after
